@@ -11,13 +11,11 @@ local console = {}
 --     console.log({ c = 'd', e = 'f' })
 --
 function console.log(obj)
-    io.write(dump(obj), "\n\n")
+    io.write(dump(obj), "\n")
 end
 
 function dump(obj)
-    local _type = type(obj)
-
-    if _type == "table" then
+    if type(obj) == "table" then
         return dump_table(obj)
     else
         return tostring(obj)
@@ -44,17 +42,17 @@ function dump_dict(dict)
         table.insert(ret, string.format('["%s"] = %s', k, dump(v)))
     end
 
-    return table.concat(ret, "\n")
+    return string.format('{%s}', table.concat(ret, ", "))
 end
 
 function dump_array(array)
     local ret = {}
 
-    for i,v in ipairs(array) do
-        table.insert(ret, string.format('%d) %s', i, dump(v)))
+    for _,v in ipairs(array) do
+        table.insert(ret, dump(v))
     end
 
-    return table.concat(ret, "\n")
+    return string.format('{%s}', table.concat(ret, ", "))
 end
 
 return console
