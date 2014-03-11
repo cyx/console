@@ -11,7 +11,7 @@ local console = {}
 --     console.log({ c = 'd', e = 'f' })
 --
 function console.log(obj)
-    io.write(dump(obj), "\n")
+    return io.write(dump(obj), "\n")
 end
 
 function dump(obj)
