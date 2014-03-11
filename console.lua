@@ -6,53 +6,53 @@ local console = {}
 
 -- @example:
 --
---     console.log('hello')
---     console.log({ 'a', 'b', 'c' })
---     console.log({ c = 'd', e = 'f' })
+--	 console.log('hello')
+--	 console.log({ 'a', 'b', 'c' })
+--	 console.log({ c = 'd', e = 'f' })
 --
 function console.log(obj)
-    return io.write(dump(obj), "\n")
+	return io.write(dump(obj), "\n")
 end
 
 function dump(obj)
-    if type(obj) == "table" then
-        return dump_table(obj)
-    else
-        return tostring(obj)
-    end
+	if type(obj) == "table" then
+		return dump_table(obj)
+	else
+		return tostring(obj)
+	end
 end
 
 function dump_table(obj)
-    -- let's favor speed over accuracy, given that
-    -- this is mainly for debugging anyway.
-    --
-    -- we rely on the fact that a dictionary typically
-    -- has string keys, and hence will yield a size of 0.
-    if #obj == 0 then
-        return dump_dict(obj)
-    else
-        return dump_array(obj)
-    end
+	-- let's favor speed over accuracy, given that
+	-- this is mainly for debugging anyway.
+	--
+	-- we rely on the fact that a dictionary typically
+	-- has string keys, and hence will yield a size of 0.
+	if #obj == 0 then
+		return dump_dict(obj)
+	else
+		return dump_array(obj)
+	end
 end
 
 function dump_dict(dict)
-    local ret = {}
+	local ret = {}
 
-    for k,v in pairs(dict) do
-        table.insert(ret, string.format('["%s"] = %s', k, dump(v)))
-    end
+	for k,v in pairs(dict) do
+		table.insert(ret, string.format('["%s"] = %s', k, dump(v)))
+	end
 
-    return string.format('{%s}', table.concat(ret, ", "))
+	return string.format('{%s}', table.concat(ret, ", "))
 end
 
 function dump_array(array)
-    local ret = {}
+	local ret = {}
 
-    for _,v in ipairs(array) do
-        table.insert(ret, dump(v))
-    end
+	for _,v in ipairs(array) do
+		table.insert(ret, dump(v))
+	end
 
-    return string.format('{%s}', table.concat(ret, ", "))
+	return string.format('{%s}', table.concat(ret, ", "))
 end
 
 return console
